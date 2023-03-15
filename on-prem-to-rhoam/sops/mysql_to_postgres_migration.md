@@ -82,3 +82,9 @@ spec:
       restartPolicy: Never
 EOF
 ```
+
+## Remove the namespace
+Remove the namespace when job completes
+```
+oc delete project pgloader-migration
+```

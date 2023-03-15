@@ -2,6 +2,8 @@
 
 This document describes the necessary steps that are required in order to migrate from on-prem to RHOAM with Red Hat having full access to customer's AWS account and source cluster. 
 
+</b> Note: The following steps are subject to change </b>
+
 # Before migration pre-requisites 
 
 These steps must be completed a day (or more) before the migration starts. All of the steps listed in this section are not service affecting and are done in order to minimize the time it takes to migrate.
