@@ -8,7 +8,7 @@ This SOP covers a scenario when SSO integration must be created for addtional (n
 
 ## Envs
 ```
-RHSSO_NAMESPACE=<namespace where RHSSO is installed - "redhat-rhoam-rhsso>
+RHSSO_NAMESPACE=redhat-rhoam-rhsso
 ```
 ```
 TENANT_NAME=<org name of the tenant>

@@ -211,10 +211,9 @@ MESSAGE bus URL:
 echo -n "redis://$SYSTEM_REDIS_HOST:6379/1" | base64 -w 0 | xargs -I MBUS_URL_IN_DATA oc patch secret system-redis -n $THREESCALE_NAMESPACE -p '{"data":{"MESSAGE_BUS_URL": "MBUS_URL_IN_DATA"}}'
 ```
 ## Patch APIManager to use external resources
-Add the following to the spec of APIM
+Patch the APIManager with highAvailability
 ```
-highAvailability:
-    enabled: true
+oc patch apimanager 3scale -n $NAMESPACE --type=merge --patch '{"spec":{"highAvailability":{"enabled": true}}}'
 ```
 
 ---
@@ -226,10 +225,10 @@ This part of SOP covers how to scale down 3scale instance.
 ## Envs
 
 ```
-OPERATOR_NAMESPACE=<namespace where operator lives>
+OPERATOR_NAMESPACE=<3scale operator namespace>
 ```
 ```
-THREESCALE_NAMESPACE=<namespace where 3scale is>
+THREESCALE_NAMESPACE=<threescale instance namespace>
 ```
 ## Scale up 3scale operator
 ```
@@ -252,7 +251,7 @@ oc exec -t $(oc get pods -l 'deploymentConfig=system-sidekiq' -o json -n $THREES
 # Confirm 3scale api call works as expected by fetching list of accounts
 ## Envs
 ```
-THREESCALE_NAMESPACE=<Namespace of 3scale instance>
+THREESCALE_NAMESPACE=<threescale instance namespace>
 ```
 ## Confirm master api calls work 
 ```

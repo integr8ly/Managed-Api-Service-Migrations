@@ -2,6 +2,12 @@
 
 This document describes the necessary steps that are required in order to migrate from on-prem to RHOAM with Red Hat having limited access to customer's AWS account. 
 
+</b> Note: The following steps are subject to change </b>
+
+## Checklist
+
+<b> [Migration tracker](./task_checklist.md#tracker-for-limited-access-migration) </b> 
+
 # Before migration pre-requisites 
 
 These steps must be completed a day (or more) before the migration starts. All of the steps listed in this section are not service affecting and are done in order to minimize the time it takes to migrate.
@@ -55,6 +61,16 @@ These steps must be completed a day (or more) before the migration starts. All o
 - Two Redis instances with version matching RHOAM version
 - In case if the system database is not PostgreSQL database type, provision PostgreSQL - this database will be used as the destination database during conversion from MySQL or Oracle to PostgreSQL
 
+---
+### Pre-requisite 6
+
+<b> Owner </b>: RHOAM Eng
+
+<b> Goal </b>: Create MITM instance
+
+<b> [SOP Link](../sops/mitm.md#create-mitm-instance) </b> 
+
+
 # Customer / Red Hat pre-requisites
 
 
@@ -80,6 +96,8 @@ These steps must be completed a day (or more) before the migration starts. All o
 <b> Owner </b>: RHOAM Eng
 
 <b> Goal </b>: Confirm that the access to the S3 is correct and that the bucket contents can be pulled
+
+<b> [SOP Link](../sops/pull-push-S3-contents.md#pull-from-s3-bucket) </b> 
 
 ---
 ### Pre-requisite 4
@@ -123,7 +141,6 @@ These steps must be completed a day (or more) before the migration starts. All o
 <b> Goal </b>: Confirm that there's a rollback procedure in place in case of migration failure
 
 
-
 # Migration
 
 Once all of the pre-requisites are met the migration can start
@@ -136,11 +153,15 @@ Below are the steps to be performed on source cluster
 ### Step 1
 <b> Owner </b>: Customer
 
-<b> Goal </b>: Prepare 3scale isntance for the migration:
+<b> Goal </b>: Prepare 3scale instance for the migration:
 
 - Stop traffic going to 3scale instance
 - Clear the job queue or accept the potential data loss
 - Scale down 3scale instance
+
+To check the status of the 3scale queues follow the SOP:
+
+<b> [SOP Link](../sops/sidekiq_queue_status.md#check-the-3scale-queues-status) </b>
 
 ---
 ### Step 2

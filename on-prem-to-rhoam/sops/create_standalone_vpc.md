@@ -9,14 +9,10 @@ This SOP covers the AWS commands needed to create a standalone VPC, subnets, rou
 ## Create and configure the VPC
 ### Create the standalone VPC
 ```
-aws ec2 create-vpc \
+STANDALONE_VPC_ID=$(aws ec2 create-vpc \
     --cidr-block 10.2.0.0/26 \
     --tag-specification 'ResourceType=vpc,Tags=[{Key=Name,Value=StandaloneVPC}]' \
-    --query Vpc.VpcId --output text
-```
-Note: the `--query Vpc.VpcId --output text` flags tell the command to return the ID of the new VPC, assign this value to an environment variable
-```
-STANDALONE_VPC_ID=<vpc-id-from-output>
+    --query Vpc.VpcId --output text)
 ```
 ### Enable DNS hostnames and DNS resolution on standalone VPC
 ```
@@ -36,39 +32,30 @@ Note: Make sure to replace the <region-of-standalone-vpc> with the region the st
 REGION=<region-of-standalone-vpc>
 ```
 ```
-aws ec2 create-subnet \
+STANDALONE_SUBNET_1_ID=$(aws ec2 create-subnet \
     --vpc-id $STANDALONE_VPC_ID \
     --cidr-block 10.2.0.0/27 \
     --availability-zone ${REGION}a \
     --tag-specification 'ResourceType=subnet,Tags=[{Key=Name,Value=StandaloneVPC-PrivateSubnet1}]' \
-    --query 'Subnet.SubnetId' --output text
+    --query 'Subnet.SubnetId' --output text)
 ```
 ```
-aws ec2 create-subnet \
+STANDALONE_SUBNET_2_ID=$(aws ec2 create-subnet \
     --vpc-id $STANDALONE_VPC_ID \
     --cidr-block 10.2.0.32/27 \
     --availability-zone ${REGION}b \
     --tag-specification 'ResourceType=subnet,Tags=[{Key=Name,Value=StandaloneVPC-PrivateSubnet2}]' \
-    --query 'Subnet.SubnetId' --output text
-```
-Note: the `--query 'Subnet.SubnetId' --output text` flags tell the commands to return the IDs of the new subnets, assign these value to environment variables (the order doesn't matter)
-```
-STANDALONE_SUBNET_1_ID=<subnet-1-id-from-output>
-STANDALONE_SUBNET_2_ID=<subnet-2-id-from-output>
+    --query 'Subnet.SubnetId' --output text)
 ```
 
 ## Create and configure the security group
 ### Create the security group
 ```
-aws ec2 create-security-group \
+STANDALONE_SECURITY_GROUP_ID=$(aws ec2 create-security-group \
     --group-name standalonesecuritygroup --description "security group for standalone VPC" \
     --vpc-id $STANDALONE_VPC_ID \
     --tag-specification 'ResourceType=security-group,Tags=[{Key=Name,Value=StandaloneVPC-SecurityGroup}]' \
-    --query 'GroupId' --output text
-```
-Note: the `--query 'GroupId' --output text` flags tell the command to return the ID of the new Security Group, assign this value to an environment variable
-```
-STANDALONE_SECURITY_GROUP_ID=<security-group-id-from-output>
+    --query 'GroupId' --output text)
 ```
 ### Add inbound rule to security group
 ```
@@ -82,23 +69,16 @@ Note: specifying `-1` for the protocol indicates the rule should be applied for 
 ### Create the peering connection
 First get the ID of the cluster VPC which can be found using the `red-hat-managed` tag and assign the value to an environment variable
 ```
-aws ec2 describe-vpcs \
+CLUSTER_VPC_ID=$(aws ec2 describe-vpcs \
     --filters Name=tag:red-hat-managed,Values=true \
-    --query 'Vpcs[].VpcId[]' --output text
-```
-```
-CLUSTER_VPC_ID=<cluster-vpc-id-from-output>
+    --query 'Vpcs[].VpcId[]' --output text)
 ```
 Now create the peering connection
 ```
-aws ec2 create-vpc-peering-connection \
+PEERING_CONNECTION_ID=$(aws ec2 create-vpc-peering-connection \
     --vpc-id $STANDALONE_VPC_ID \
     --peer-vpc-id $CLUSTER_VPC_ID \
-    --query 'VpcPeeringConnection.VpcPeeringConnectionId' --output text
-```
-Note: the `--query 'VpcPeeringConnection.VpcPeeringConnectionId' --output text` flags tell the command to return the ID of the new Peering Connection, assign this value to an environment variable
-```
-PEERING_CONNECTION_ID=<peering-connection-id-from-output>
+    --query 'VpcPeeringConnection.VpcPeeringConnectionId' --output text)
 ```
 ### Accept the peering connection
 ```
