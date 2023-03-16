@@ -96,8 +96,8 @@ Pre-req:
 ### Production cluster config
 
 Pre-req:
-- access to production cluster console 
-- oc logged in to production cluster
+- [ ] access to production cluster console 
+- [ ] oc logged in to production cluster
 
 1. - [ ] Step 18 completed
 2. - [ ] Step 19 completed
