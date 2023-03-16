@@ -6,48 +6,30 @@
 
 Following tables shows possible migration paths based on the access level given to Red Hat
 
-| Step | Full Access | Limited access | Further limits on access |  No access  |
-|--------------|------------|--------------|----------|---|
-|Performing pre-requisite steps by both parties, Red Hat and the customer |Red Hat / Customer|Red Hat / Customer|Red Hat / Customer|Red Hat / Customer|
-|Disable services so that there's no more traffic going to 3scale|Customer|Customer|Customer|Customer|
-|Confirming that the job queue is empty or relatively low and acceptance on data loss of any job that has not been processed|Customer|Customer|Customer|Customer|
-|Scaling down 3scale instance|Red Hat|Customer|Customer|Customer|
-|Performing dumps|Red Hat|Customer|Customer|Customer|
-|Creation of migration cluster|Red Hat|Red Hat|Red Hat|Customer|
-|Connecting migration cluster to AWS account|Red Hat|Red Hat|Red Hat|Customer|
-|Restoring system database on migration AWS account|Red Hat|Red Hat|Red Hat|Customer|
-|Data manipulation|Red Hat|Red Hat|Red Hat|Customer|
-|Connecting the system database and empty redis instance to migration|Red Hat|Red Hat|Red Hat|Customer|
-|Going through 3scale|Red Hat|Red Hat|Red Hat|Customer|
-|Data manipulation to ensure the routes will match the destination cluster|Red Hat|Red Hat|Red Hat|Customer|
-|System database dump from migration cluster|Red Hat|Red Hat|Red Hat|Customer|
-|Seeding the destination cluster system database|Red Hat|Red Hat|Red Hat|Customer|
-|Restoring backend worker Redis instance to restore analytics data|Red Hat|Red Hat|Customer|Customer|
-|Configuring 3scale at destination cluster|Red Hat|Red Hat|Red Hat|Red Hat|
-|Restoring backend worker Redis instance to restore analytics data|Red Hat|Red Hat|Customer|Customer|
-|Testing and publishing the SSO integrations|Customer|Customer|Customer|Customer|
-|Verification of the installation of 3scale and RHOAM|Red Hat|Red Hat|Red Hat|Red Hat|
-|Updates to customer systems to point to the new routes|Customer|Customer|Customer|Customer|
+| Step | Limited access | Further limits on access |  No access  |
+|--------------|--------------|----------|---|
+|Performing pre-requisite steps by both parties, Red Hat and the customer |Red Hat / Customer|Red Hat / Customer|Red Hat / Customer|
+|Disable services so that there's no more traffic going to 3scale|Customer|Customer|Customer|
+|Confirming that the job queue is empty or relatively low and acceptance on data loss of any job that has not been processed|Customer|Customer|Customer|
+|Scaling down 3scale instance|Customer|Customer|Customer|
+|Performing dumps|Customer|Customer|Customer|
+|Creation of migration cluster|Red Hat|Red Hat|Customer|
+|Connecting migration cluster to AWS account|Red Hat|Red Hat|Customer|
+|Restoring system database on migration AWS account|Red Hat|Red Hat|Customer|
+|Data manipulation|Red Hat|Red Hat|Customer|
+|Connecting the system database and empty redis instance to migration|Red Hat|Red Hat|Customer|
+|Going through 3scale|Red Hat|Red Hat|Customer|
+|Data manipulation to ensure the routes will match the destination cluster|Red Hat|Red Hat|Customer|
+|System database dump from migration cluster|Red Hat|Red Hat|Customer|
+|Seeding the destination cluster system database|Red Hat|Red Hat|Customer|
+|Restoring backend worker Redis instance to restore analytics data|Red Hat|Customer|Customer|
+|Configuring 3scale at destination cluster|Red Hat|Red Hat|Red Hat|
+|Restoring backend worker Redis instance to restore analytics data|Red Hat|Customer|Customer|
+|Testing and publishing the SSO integrations|Customer|Customer|Customer|
+|Verification of the installation of 3scale and RHOAM|Red Hat / Customer|Red Hat / Customer|Red Hat / Customer|
+|Updates to customer systems to point to the new routes|Customer|Customer|Customer|
 
 # Migrations per migration path
-
-## <b> [Red Hat has full permissions to AWS accounts used](./full_access/README.md#red-hat-has-full-permissions-to-aws-accounts-used) </b>
-### <b> Red Hat recommended approach </b>
-
-This migration path is the least consuming for the customer with the most access required by Red Hat.
-
-#### Permissions required
-- Full access to source and destination AWS account RDS, Elasticache, S3
-- Full access to source and destination OSD cluster
-
-#### Customer interactions required
-
-- Agreement on pre-requisites between Red Hat and the Customer
-- Agreement on SMTP, Alerting email address and custom domain
-- Agreement on the timing given to drain 3scale queues
-- Publishing and verifying the SSO integration flow
-- Verification of the destination 3scale instance
-- Configuring customer systems prior and post migration
 
 ## <b> [Red Hat has limited access to customer data](./limited_access/README.md#red-hat-has-limited-access-to-customer-data) </b> 
 
@@ -121,9 +103,6 @@ These are the prequisites that must be confirmed before starting the migration
 
 ## Access levels
 
-- Source 
-    - Source cluster access - the access required can be either on Red Hat or customer side and is dependent on migration path used
-    - Source AWS account access - the access required can be either on Red Hat or customer side and is dependent on migration path used
 - Migration
     - Migration cluster access - Red Hat / Customer - dependant on migration path used
     - Migration AWS account - Red Hat / Customer - dependant on migration path used
