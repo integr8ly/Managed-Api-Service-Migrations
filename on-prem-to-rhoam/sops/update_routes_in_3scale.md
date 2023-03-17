@@ -54,14 +54,22 @@ oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB
 TENANT_ID=<id>
 ```
 * Run query to update admin route
-  * NOTE: The following query ignores the dev portal route. Include the `domain` field to query if dev portal also needs to be updated.
 ```
-oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME -c "UPDATE accounts SET self_domain = lower('$TENANT_ORG_NAME.$WILDCARD_DOMAIN') WHERE id = '$TENANT_ID';"
+oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME -c "UPDATE accounts SET self_domain = lower('$TENANT_ORG_NAME-admin.$WILDCARD_DOMAIN') WHERE id = '$TENANT_ID';"
+```
+* To update the dev portal run
+```
+oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME -c "UPDATE accounts SET domain = lower('$TENANT_ORG_NAME.$WILDCARD_DOMAIN') WHERE id = '$TENANT_ID';"
 ```
 
 * Verify admin route is updated
 ```
 oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME -c  "SELECT id, self_domain FROM accounts WHERE org_name = '$TENANT_ORG_NAME';"
+```
+
+* Verify dev portal route is updated
+```
+oc exec deploy/postgresql -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME -c  "SELECT id, domain FROM accounts WHERE org_name = '$TENANT_ORG_NAME';"
 ```
 
 ## Cluster cleanup
