@@ -18,6 +18,6 @@ org: 3scale
 ```
 - Once created, navigate back to accounts
 - Locate the 3scale tenant that just got created and click "Activate"
-- Impersonate as the tenant and double check that SSO-Integrations can be created
+- Log in as the tenant and double check that SSO-Integrations can be created (please note - do not use impersonation feature as it has limitations)
 - Go to access tokens and create full access access_token
-- Copy the access token and update the system-seed admin token (do not confuse this with master token)
+- Copy the access token and update the system-seed admin token (do not confuse this with master token) under red-rhoam-operator and redhat-rhoam-3scale namespace
