@@ -258,7 +258,7 @@ THREESCALE_NAMESPACE=<threescale instance namespace>
 MASTER_TOKEN=$(oc get secrets/system-seed -n $THREESCALE_NAMESPACE -o template --template={{.data.MASTER_ACCESS_TOKEN}} | base64 -d)
 ```
 ```
-MASTER_ROUTE=$(oc get route -n migration | grep master |awk '{print $2}')
+MASTER_ROUTE=$(oc get route -n $THREESCALE_NAMESPACE | grep master |awk '{print $2}')
 ```
 Make the API call:
 ```

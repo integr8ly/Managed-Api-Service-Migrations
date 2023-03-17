@@ -87,10 +87,17 @@ EOF
 aws s3api put-object --bucket $BUCKETNAME --key $RDBDUMPNAME --body $RDBDUMPNAME
 ```
 ## Create Redis from the .rdb dump file store in s3 bucket
+### Get Subnet group name
 ```
-aws elasticache create-cache-cluster \ 
+BACKEND_REDIS_ID=$(oc get redis/threescale-backend-redis-rhoam -n redhat-rhoam-operator -o json | jq -r '.metadata.annotations.resourceIdentifier')
+REDISCLUSTER_SUBNET_GROUP_NAME=$(aws elasticache describe-cache-clusters | jq --arg BACKEND_REDIS_ID "$BACKEND_REDIS_ID" '.CacheClusters | map(select(.ReplicationGroupId == $BACKEND_REDIS_ID))[0].CacheSubnetGroupName' -r)
+```
+### Create Redis from snapshot in s3 bucket
+```
+aws elasticache create-cache-cluster \
 --cache-cluster-id $REDISCLUSTERID \
 --cache-node-type cache.t3.micro \
+--cache-subnet-group-name $REDISCLUSTER_SUBNET_GROUP_NAME \
 --engine redis \
 --engine-version 6.2 \
 --num-cache-nodes 1 \

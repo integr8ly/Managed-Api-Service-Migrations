@@ -45,6 +45,8 @@ spec:
                  value: ""
                - name: AWS_SHARED_CREDENTIALS_FILE
                  value: /home/migration/.credentials
+               - name: KUBECONFIG
+                 value: /home/migration/.kube/config
               command:
                 - /bin/sh
               ports:
