@@ -30,7 +30,10 @@ oc scale dc/{system-memcache,zync-database,apicast-production,apicast-staging,ba
 oc scale deployment rhmi-operator -n redhat-rhoam-operator --replicas=0
 ```
 
-## Creating S3 bucket with required policy
+## Complete destination AWS account prerequisites
+
+[Follow steps to setup destination AWS resources](./deistination_aws_prerequisites.md)
+
 ### Export following ENVs:
 
 - <b>BUCKETNAME</b> - desired S3 bucket name
@@ -43,11 +46,6 @@ echo "Your region is $REGION"
 - <b>RDBDUMPNAME</b> - name of the .rdb dump you have stored locally (include .rdb extension)
 - <b>REDISCLUSTERID</b> - name of temporary Redis instance
 - <b>SNAPSHOTNAME</b> - name of the snapshot to be created
-
-### Create bucket used as a storage for your rdb dump file. This is done in order to create Redis using the .rdb file
-```
-aws s3 mb s3://$BUCKETNAME --region $REGION
-```
 ### Block public access to the bucket
 ```
 aws s3api put-public-access-block \
@@ -120,16 +118,11 @@ Note: As precaution, please double check envs used
 ```
 aws elasticache delete-cache-cluster --cache-cluster-id $REDISCLUSTERID
 ```
+
 ## Delete s3 bucket and objects
-Note: As precaution, please double check envs used
-- Remove object:
-```
-aws s3 rm s3://$BUCKETNAME --recursive
-```
-- Delete bucket
-```
-aws s3api delete-bucket --bucket $BUCKETNAME
-```
+
+[Follow steps to cleanup destination AWS resources](./destination_aws_cleanup.md)
+
 ## Restoring Redis on destination cluster via CRO
 
 ### Edit Redis CR to prevent recreation during restoration
