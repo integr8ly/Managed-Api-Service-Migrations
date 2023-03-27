@@ -1,4 +1,4 @@
-# Create MITM instance
+# Create migration workspace instance
 
 This SOP covers creation of a pod on kubernetes cluster where all the required steps should be performed on to enable logging and visibility.
 
@@ -54,6 +54,6 @@ spec:
                   protocol: TCP
               imagePullPolicy: Always
               tty: true
-              image: 'quay.io/mstoklus/migration-tool:v0.0.1'
+              image: 'quay.io/integreatly/rhoam-migration-workspace:v0.0.1'
 EOF
 ```

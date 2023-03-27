@@ -14,6 +14,8 @@ These steps must be completed a day (or more) before the migration starts. All o
 
 # Red Hat pre-requistes
 
+`Note - All steps are to be run on the migration workspace instance`
+
 ### Pre-requisite 1
 
 <b> Owner </b>: Red Hat - BU/SRE-P
@@ -66,9 +68,9 @@ These steps must be completed a day (or more) before the migration starts. All o
 
 <b> Owner </b>: RHOAM Eng
 
-<b> Goal </b>: Create MITM instance
+<b> Goal </b>: Create migration workspace instance
 
-<b> [SOP Link](../sops/mitm.md#create-mitm-instance) </b> 
+<b> [SOP Link](../sops/mitm.md#create-migration-workspace-instance) </b> 
 
 
 # Customer / Red Hat pre-requisites

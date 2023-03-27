@@ -21,24 +21,23 @@ WILDCARD_DOMAIN=<wildcard domain, example: apps.mstoklus-ccs.mjhc.s1.devshift.or
 Each new SSO integration requires it's own keycloak client created
 
 ```
-cat << EOF | oc create -f - -n $RHSSO_NAMESPACE
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
 metadata:
-  name: $TENANT_NAME
+  name: $TENANT_NAME  <-------- Update with TENANT_NAME
 spec:
   client:
     enabled: true
     clientAuthenticatorType: client-secret
     fullScopeAllowed: true
     redirectUris:
-      - 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN/*'
+      - 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN/*' <-------- Update with TENANT_NAME and WILDCARD_DOMAIN
     access:
       configure: true
       manage: true
       view: true
-    clientId: $TENANT_NAME
-    rootUrl: 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN'
+    clientId: $TENANT_NAME <-------- Update with TENANT_NAME <lower case chars only>
+    rootUrl: 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN' <-------- Update with TENANT_NAME and WILDCARD_DOMAIN
     implicitFlowEnabled: false
     publicClient: false
     standardFlowEnabled: true
@@ -122,7 +121,6 @@ spec:
   realmSelector:
     matchLabels:
       sso: integreatly
-EOF
 ```
 
 ## Integrate with the new client
