@@ -33,7 +33,7 @@ BUCKETPOLICY=temp-migration-bucket
 
 Create s3 bucket policy for created bucket
 ```
-aws iam create-policy --policy-name $BUCKETPOLICY --policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["S3:PutObject","S3:ListBucket","S3:DeleteBucket","S3:CreateBucket","S3:PutBucketPolicy","S3:GetObject","S3:DeleteObject","S3:PutPublicAccessBlock"],"Resource":["arn:aws:s3:::'$BUCKETNAME'","arn:aws:s3:::'$BUCKETNAME'/*"]}]}'
+aws iam create-policy --policy-name $BUCKETPOLICY --policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["S3:PutObject","S3:ListBucket","S3:DeleteBucket","S3:CreateBucket","S3:PutBucketPolicy","S3:GetObject","S3:DeleteObject","S3:PutPublicAccessBlock","S3:PutBucketPublicAccessBlock","S3:GetBucketPublicAccessBlock","S3:ListAllMyBuckets"],"Resource":["arn:aws:s3:::'$BUCKETNAME'","arn:aws:s3:::'$BUCKETNAME'/*"]}]}'
 
 ```
 
