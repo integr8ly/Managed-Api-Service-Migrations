@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sample-redis
+data:
+  port: NjM3OQ==
+  uri: bG9jYWxob3N0
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: foo
+data:
+  file: "/app/seed.json"
+  target: "50_000_000"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foobar
+spec:
+  containers:
+    - command:
+      - seed
+      name: container
+      image: redis_dump
+      envFrom:
+        - configMapRef:
+            name: foo
+            optional: false
+      env:
+        - name: PORT
+          valueFrom:
+            secretKeyRef:
+              key: port
+              name: sample-redis
+        - name: URI
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: sample-redis
+  restartPolicy: Never

@@ -1,0 +1,201 @@
+[
+  {
+    "key": "service:1/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service_id:2/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service/id:3/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:4/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:5/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:6/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:7/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:8/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+      {
+    "key": "service:9/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:10/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:11/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:12/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:13/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:14/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:15/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:16/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:17/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:18/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+      {
+    "key": "service:19/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:20/sample",
+    "type": "string",
+    "value": "dummy"
+  },  {
+    "key": "service:21/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:22/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:23/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:24/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:25/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:26/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:27/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:28/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+      {
+    "key": "service:29/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:30/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:31/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:32/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:33/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:34/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:35/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:36/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:37/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:38/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+      {
+    "key": "service:39/sample",
+    "type": "string",
+    "value": "dummy"
+  },
+    {
+    "key": "service:40/sample",
+    "type": "string",
+    "value": "dummy"
+  }
+]
