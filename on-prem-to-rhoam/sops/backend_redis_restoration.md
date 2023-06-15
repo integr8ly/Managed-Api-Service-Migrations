@@ -174,19 +174,3 @@ Above should return "available"
 ```
 oc patch redis/threescale-backend-redis-rhoam -n redhat-rhoam-operator -p '{"spec":{"skipCreate":false}}' --type merge 
 ```
-### Scale back RHOAM
-```
-oc scale deployment rhmi-operator -n redhat-rhoam-operator --replicas=1
-```
-### Scale back 3scale operator and 3scale instance
-```
-oc scale deployment threescale-operator-controller-manager-v2 -n redhat-rhoam-3scale-operator --replicas=1
-```
-```
-oc scale dc/{system-memcache,zync-database,apicast-production,apicast-staging,backend-cron,backend-listener,backend-worker,backend-redis,system-app,system-memcache,system-mysql,system-redis,system-sidekiq,system-sphinx,zync,zync-database,zync-que} -n redhat-rhoam-3scale --replicas=1
-```
-### Wait for 3scale to fully restore, you can do this by checking installation state on rhmi CR:
-```
-oc get rhmi -n redhat-rhoam-operator -o json | jq -r '.items[0].status.stage'
-```
-Desired state is "completed". Please ensure to run the above command after a minute or two after scaling back RHOAM to trully reflect RHOAM state.
