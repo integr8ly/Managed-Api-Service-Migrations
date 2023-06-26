@@ -12,7 +12,7 @@ metadata:
 EOF
 ```
 
-## Oc login to the namespace
+## OC login to the namespace
 ```
 oc project migration-workspace
 ```

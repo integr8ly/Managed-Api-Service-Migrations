@@ -14,11 +14,11 @@ Make sure to replace the <namespace-placeholder> with the actual namespace conta
 ```
 NAMESPACE=<namespace-placholder>
 
-DB_HOST=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d '@' -f 2 | cut -d ':' -f 1)
-DB_PORT=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d ':' -f 4 | cut -d '/' -f 1)
-DB_USER=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.DB_USER}} | base64 --decode)
-DB_PASSWORD=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.DB_PASSWORD}} | base64 --decode)
-DATABASE_NAME=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d '/' -f 4)
+POSTGRES_HOST=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d '@' -f 2 | cut -d ':' -f 1)
+POSTGRES_PORT=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d ':' -f 4 | cut -d '/' -f 1)
+POSTGRES_USER=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.DB_USER}} | base64 --decode)
+POSTGRES_PASSWORD=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.DB_PASSWORD}} | base64 --decode)
+POSTGRES_DATABASE_NAME=$(oc get secrets/system-database -n $NAMESPACE -o template --template={{.data.URL}} | base64 --decode | cut -d '/' -f 4)
 ```
 
 ### Create a throwaway Postgres 13.8 client on engineering cluster
@@ -30,7 +30,7 @@ oc new-app --image-stream="openshift/postgresql:13-el8" -e POSTGRESQL_USER=postg
 
 ### Backup Postgres to local machine using `pg_dump`
 ```
-oc exec $(oc get pods --no-headers | awk '{print $1}') -- env PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER -c $DATABASE_NAME > 2-system_database_backup.psql
+oc exec $(oc get pods --no-headers | awk '{print $1}') -- env PGPASSWORD=$POSTGRES_PASSWORD pg_dump -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c $POSTGRES_DATABASE_NAME > 2-system_database_backup.psql
 ```
 
 ### Confirm that `pg_dump` wasn't interrupted
@@ -53,11 +53,11 @@ Make sure to update the value of the `NAMESPACE` var if needed
 ```
 NAMESPACE=redhat-rhoam-operator
 
-DB_HOST=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.host}} | base64 --decode)
-DB_PORT=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.port}} | base64 --decode)
-DB_USER=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.username}} | base64 --decode)
-DB_PASSWORD=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.password}} | base64 --decode)
-DATABASE_NAME=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.database}} | base64 --decode)
+POSTGRES_HOST=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.host}} | base64 --decode)
+POSTGRES_PORT=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.port}} | base64 --decode)
+POSTGRES_USER=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.username}} | base64 --decode)
+POSTGRES_PASSWORD=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.password}} | base64 --decode)
+POSTGRES_DATABASE_NAME=$(oc get secrets/threescale-postgres-rhoam -n $NAMESPACE -o template --template={{.data.database}} | base64 --decode)
 ```
 
 ### Create a throwaway Postgres 13.8 client on production cluster
@@ -68,9 +68,9 @@ oc new-app --image-stream="openshift/postgresql:13-el8" -e POSTGRESQL_USER=postg
 ```
 
 ### Source the `.psql` file
-Note: If the database $DATABASE_NAME doesn't exist you will first need to log in to the Postgres instance and create it
+Note: If the database $POSTGRES_DATABASE_NAME doesn't exist you will first need to log in to the Postgres instance and create it
 ```
-oc exec -i $(oc get pods --no-headers | awk '{print $1}') -- env PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DATABASE_NAME < system_database_backup.psql
+oc exec -i $(oc get pods --no-headers | awk '{print $1}') -- env PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DATABASE_NAME < system_database_backup.psql
 ```
 
 ### Cleanup throwaway Postgres client if it is no longer needed

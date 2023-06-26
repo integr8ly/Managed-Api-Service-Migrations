@@ -1,6 +1,6 @@
 # Create SSO integration with additional tenants
 
-This SOP covers a scenario when SSO integration must be created for addtional (non default RHOAMs 3scale tenant) on cluster
+This SOP covers a scenario when SSO integration must be created for additional (non default RHOAMs 3scale tenant) on cluster
 
 ## Pre-req
 - access to 3scale master portal (this is due to the fact that each tenant where SSO integration must be created must be accessed via impersonation)
@@ -14,30 +14,31 @@ RHSSO_NAMESPACE=redhat-rhoam-rhsso
 TENANT_NAME=<org name of the tenant>
 ```
 ```
-WILDCARD_DOMAIN=<wildcard domain, example: apps.mstoklus-ccs.mjhc.s1.devshift.org >
+WILDCARD_DOMAIN=$(oc get routes console -n openshift-console -o json | jq -r '.status.ingress[0].routerCanonicalHostname' | sed 's/router-default.//')
 ```
 ## Create keycloak client
 
-Each new SSO integration requires it's own keycloak client created
+Each new SSO integration requires its own keycloak client created
 
 ```
+oc apply -f - -n $RHSSO_NAMESPACE <<EOF
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
 metadata:
-  name: $TENANT_NAME  <-------- Update with TENANT_NAME
+  name: $TENANT_NAME
 spec:
   client:
     enabled: true
     clientAuthenticatorType: client-secret
     fullScopeAllowed: true
     redirectUris:
-      - 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN/*' <-------- Update with TENANT_NAME and WILDCARD_DOMAIN
+      - 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN/*'
     access:
       configure: true
       manage: true
       view: true
-    clientId: $TENANT_NAME <-------- Update with TENANT_NAME <lower case chars only>
-    rootUrl: 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN' <-------- Update with TENANT_NAME and WILDCARD_DOMAIN
+    clientId: $TENANT_NAME
+    rootUrl: 'https://$TENANT_NAME-admin.$WILDCARD_DOMAIN'
     implicitFlowEnabled: false
     publicClient: false
     standardFlowEnabled: true
@@ -121,6 +122,7 @@ spec:
   realmSelector:
     matchLabels:
       sso: integreatly
+EOF
 ```
 
 ## Integrate with the new client

@@ -20,5 +20,4 @@ oc get secrets system-recaptcha -n $NAMESPACE -o json | jq -r 'del(.metadata.own
 oc get secrets system-master-apicast -n $NAMESPACE -o json | jq -r 'del(.metadata.ownerReferences,.metadata.selfLink,.metadata.namespace,.metadata.uid,.metadata.resourceVersion)' > system-master-apicast.json
 
 oc get secrets system-memcache -n $NAMESPACE -o json | jq -r 'del(.metadata.ownerReferences,.metadata.selfLink,.metadata.namespace,.metadata.uid,.metadata.resourceVersion)' > system-memcache.json
-
 ```

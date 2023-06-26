@@ -20,16 +20,16 @@ EOF
 ## Create a Secret containing the connection details
 Set MySQL and Postgres DB connection details
 ```
-MYSQL_DB_HOST=<MySQL_db_host>
+MYSQL_HOST=<MySQL_db_host>
 MYSQL_DATABASE_NAME=<MySQL_db_name>
-MYSQL_DB_USER=<MySQL_db_user>
-MYSQL_DB_PASSWORD=<MySQL_db_password>
+MYSQL_USER=<MySQL_db_user>
+MYSQL_PASSWORD=<MySQL_db_password>
 ```
 ```
-DB_HOST=<Postgres_db_host>
-DATABASE_NAME=<Postgres_db_name>
-DB_USER=<Postgres_db_user>
-DB_PASSWORD=<Postgres_db_password>
+POSTGRES_HOST=<Postgres_db_host>
+POSTGRES_DATABASE_NAME=<Postgres_db_name>
+POSTGRES_USER=<Postgres_db_user>
+POSTGRES_PASSWORD=<Postgres_db_password>
 ```
 
 ```
@@ -42,8 +42,8 @@ metadata:
 stringData:
   3scale.load: |
     LOAD DATABASE
-      FROM mysql://$MYSQL_DB_USER:$MYSQL_DB_PASSWORD@$MYSQL_DB_HOST/$MYSQL_DATABASE_NAME
-      INTO postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST/$DATABASE_NAME
+      FROM mysql://$MYSQL_USER:$MYSQL_PASSWORD@$MYSQL_HOST/$MYSQL_DATABASE_NAME
+      INTO postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DATABASE_NAME
 
     WITH prefetch rows = 10000, no truncate, create tables, include drop, create indexes, reset sequences, foreign keys, downcase identifiers, preserve index names
     ;
@@ -82,6 +82,9 @@ spec:
       restartPolicy: Never
 EOF
 ```
+
+### Note: Migrating Large Databases
+When using pgloader to migrate large databases (greater than 1-2 GBs), the Job might fail because the Pod that is running the Job may run out of memory. A potential workaround in this scenario is to edit the `pgloader-config-file` Secret and decrease the `prefetch rows` value to `1000`. Then delete the existing (failed) Job and recreate it.
 
 ## Remove the namespace
 Remove the namespace when job completes

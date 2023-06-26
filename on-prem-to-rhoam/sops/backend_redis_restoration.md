@@ -1,5 +1,5 @@
 # Redis migration
-The steps below descirbe how to migrate backend redis 3scale instance from on prem 3scale to RHOAM 3scale.
+The steps below describe how to migrate backend redis 3scale instance from on prem 3scale to RHOAM 3scale.
 
 General flow is to create a snapshot of desired Redis state and then leverage Cloud Resource Operator to restore Redis state from the snapshot provided.
 
