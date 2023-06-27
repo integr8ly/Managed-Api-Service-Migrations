@@ -1,6 +1,6 @@
 # Create standalone VPC and associated AWS network components
 
-This SOP covers the AWS commands needed to create a standalone VPC, subnets, route table, security group, and peering connection. It also covers the prerequisites needed to install a RDS and ElastiCache instance in the standalone VPC 
+This SOP covers the AWS commands needed to create a standalone VPC, subnets, route table, security group, and peering connection. It also covers the prerequisites needed to install an RDS and ElastiCache instance in the standalone VPC 
 
 ## Prerequisites
 - AWS CLI login

@@ -1,5 +1,5 @@
 # Create RHOAM default tenant
-This sop covers creation of RHOAMs default tenant in case it doesn't exists in customer database
+This sop covers creation of RHOAMs default tenant in case it doesn't exist in the customer database
 
 ## Log in to 3scale Master Portal
 
@@ -19,5 +19,5 @@ org: 3scale
 - Once created, navigate back to accounts
 - Locate the 3scale tenant that just got created and click "Activate"
 - Log in as the tenant and double check that SSO-Integrations can be created (please note - do not use impersonation feature as it has limitations)
-- Go to access tokens and create full access access_token
-- Copy the access token and update the system-seed admin token (do not confuse this with master token) under red-rhoam-operator and redhat-rhoam-3scale namespace
+- Go to access tokens and create a new access token with full privileges (check all Scopes and select Read & Write Permissions)
+- Copy the access token and update the system-seed Secret's admin token (do not confuse this with the master token) in **both** the red-rhoam-operator and the redhat-rhoam-3scale namespaces

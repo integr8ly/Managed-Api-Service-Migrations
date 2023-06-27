@@ -12,8 +12,8 @@ NAMESPACE=migration
 
 ## Create new project
 ```
-oc new-project migration
-oc project migration
+oc new-project $NAMESPACE
+oc project $NAMESPACE
 ```
 ## Create subscription to install 3scale operator 0.8.4
 ```
@@ -66,13 +66,12 @@ stringData:
 type: Opaque
 EOF
 ```
-## Create APIM
+## Create the APIManager CR
 Retrieve the wildcard domain:
 ```
-oc get routes console -n openshift-console -o json | jq -r '.status.ingress[0].routerCanonicalHostname'
+DOMAIN=$(oc get routes console -n openshift-console -o json | jq -r '.status.ingress[0].routerCanonicalHostname' | sed 's/router-default.//')
 ```
-And strip the `router-default.` from it and use as value in the wildcard domain below.
-Create APIManager
+Create the APIManager
 ```
 oc apply -f - -n $NAMESPACE <<EOF                                                             
 ---             
@@ -81,7 +80,7 @@ kind: APIManager
 metadata:
   name: 3scale
 spec:
-  wildcardDomain: DOMAIN
+  wildcardDomain: $DOMAIN
   resourceRequirementsEnabled: false                
   system:
     fileStorage:
@@ -128,7 +127,7 @@ All pods should be showing 0/X
 ---
 
 # Move secrets from local to migration cluster and plug in AWS resources
-This part of SOP covers moving the secrets to migration cluster.
+This part of SOP covers moving the secrets to migration cluster. Make sure you are in the directory containing the secrets before running the below commands.
 
 ## Env
 ```
@@ -145,7 +144,7 @@ oc apply -f system-memcache.json -n $THREESCALE_NAMESPACE
 ```
 # Plug in system db, backendlistener and backend worker to 3scale instance
 
-This part of SOP covers pluggin in 3scale system database, backend redis and system redis AWS resources to 3scale instance.
+This part of SOP covers plugging in 3scale system database, backend redis and system redis AWS resources to 3scale instance.
 
 ## Patch system-database secret
 
@@ -291,14 +290,14 @@ Confirm all mentions of MESSAGE_BUS are gone:
 oc get secret system-redis -n $THREESCALE_NAMESPACE -o yaml | grep MESSAGE_BUS
 ```
 Should return no value.
+
 ### Confirm upgrade has finished
 ```
 oc get apimanager 3scale -n $THREESCALE_NAMESPACE -o json | jq -r '.status.deployments'
 ```
 Should return all deployments as "ready"
 
-###
-Confirm that master api works as expected
+### Confirm that master api works as expected
 ```
 curl -v  -X GET "https://$MASTER_ROUTE/admin/api/accounts.xml" -d "access_token=$MASTER_TOKEN"
 ```
@@ -324,7 +323,7 @@ Due to the fact that -mas 2.13 doesn't have proper replaces we need to remove th
 oc delete sub 3scale-operator -n $THREESCALE_NAMESPACE
 ```
 ```
-oc delete csv 3scale-operator.v0.10.1-0.1675914645.p -n $THREESCALE_NAMESPACE
+oc delete csv 3scale-operator.v0.10.4 -n $THREESCALE_NAMESPACE
 ```
 ### Create subscription
 ```
