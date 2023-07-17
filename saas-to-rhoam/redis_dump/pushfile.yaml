@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: threescale-backend-redis-rhoam
+data:
+  port: NjM3OQ==
+  uri: bG9jYWxob3N0
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: foo
+data:
+  ACCOUNTS: "1,2,3,5,4,6,7"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foobar
+spec:
+  containers:
+    - command:
+      - push
+      name: container
+      image: redis_dump
+      envFrom:
+        - configMapRef:
+            name: foo
+            optional: false
+      env:
+        - name: PORT
+          valueFrom:
+            secretKeyRef:
+              key: port
+              name: threescale-backend-redis-rhoam
+        - name: URI
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: threescale-backend-redis-rhoam
+  restartPolicy: Never
